@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+{% set contribution = contribution %}
+{% set tree = tree %}
+{% set coach = coach %}
+{% set cohort = cohort %}
+
+{% for name, username in tree.filter(coach, cohort).items() %}
+<h1>{{ name }}</h1>
+<img width="1000px" height="150px" src="{{ contribution(username) }}" alt="{{ username }}" />
+{% endfor %}
+
+</body>
+</html>

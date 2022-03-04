@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body onbeforeunload="setDefault()">
+
+{% set tree = tree %}
+    <label for="coach">Choose a coach:</label>
+    <select name="coach" id="coach">
+        {% for coach in coaches %}
+            <option value="{{ coach }}">{{ coach }}</option>
+        {% endfor %}
+    </select>
+    <label for="cohort">Choose a cohort:</label>
+    <select name="cohort" id="cohort">
+    </select>
+    <br><br>
+    <button id="submit" type="button" value="Submit" onclick="buttonClick()">Submit</button>
+    <br><br>
+
+    <div id="root"></div>
+
+
+<script type="text/javascript">
+    function clearRoot(){
+        let root = document.getElementById("root");
+        while (root.firstChild){
+            root.removeChild(root.firstChild);
+        }
+    }
+
+
+    function buttonClick(e){
+        clearRoot();
+        let tree = {{ tree.root|tojson }};
+        let root = document.getElementById("root");
+        let coach = document.getElementById('coach')
+        let cohort = document.getElementById('cohort');
+        let coach_text = coach.options[coach.selectedIndex].text;
+        let cohort_text = cohort.options[cohort.selectedIndex].text;
+
+        let results = tree[coach_text][cohort_text];
+
+        Object.entries(results).forEach(pair => {
+            let div = document.createElement("div");
+            root.appendChild(div);
+            let [name, username] = pair;
+            let header = document.createElement("h1");
+            header.textContent = name;
+            div.appendChild(header);
+            let img = document.createElement("img");
+            img.id = username;
+            img.alt = username;
+            img.src = "https://media0.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif?cid=ecf05e47qgat0gh5s49q8ymszpqlmseyaqzi10leo077t1td&rid=giphy.gif&ct=g";
+            fetch(`http://127.0.0.1:5000/contribution?username=${username}`).then(response =>{
+                //img.src = response.json()['src']
+                return response.json();
+            }).then(data =>{
+                img.width = "1000";
+                img.height = "150";
+                img.src = data.src;
+            }).catch(error => {
+                console.log(error)
+                img.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/1024px-ProhibitionSign2.svg.png"
+                img.width = "50";
+                img.height = "50";
+            })
+            div.appendChild(img);
+        })
+    }
+
+    function setDefault(){
+        let coach = document.getElementById('coach')
+        coach.options.selectedIndex = 0;
+        let cohort = document.getElementById('cohort');
+        cohort.options.selectedIndex = -1;
+    }
+    window.addEventListener('DOMContentLoaded', e=>{
+        let coach = document.getElementById('coach')
+        let coach_text = coach.options[coach.selectedIndex].text;
+        let cohort = document.getElementById('cohort')
+        while (cohort.firstChild){
+            cohort.removeChild(cohort.firstChild)
+        }
+        let root = {{ tree.root|tojson }};
+        Object.keys(root[coach_text]).forEach(c => {
+          let option = document.createElement("option");
+            option.value = c;
+            option.text = c;
+            cohort.appendChild(option)
+        })
+        coach.options.selectedIndex = 0;
+    })
+    document.getElementById("coach").addEventListener('change', (e)=>{
+        let coach = e.currentTarget.options[e.currentTarget.selectedIndex].text;
+        let cohort = document.getElementById('cohort')
+        while (cohort.firstChild){
+            cohort.removeChild(cohort.firstChild)
+        }
+        let root = {{ tree.root|tojson }};
+        Object.keys(root[coach]).forEach(c => {
+          let option = document.createElement("option");
+            option.value = c;
+            option.text = c;
+            cohort.appendChild(option)
+        })
+    })
+
+    document.getElementById("submit").addEventListener("click", e =>{
+
+    })
+
+</script>
+</body>
+
+</html>
