@@ -5,21 +5,21 @@
     <title>Title</title>
 </head>
 
-<body onbeforeunload="setDefault()">
+<body onbeforeunload="setDefault()" style="background-color: #010409">
 
 {% set tree = tree %}
-    <label for="coach">Choose a coach:</label>
+    <div style="background-color: #0D1117; padding: 2em 2em 2em 2em; border-radius: 1rem; border: white 5em;">
+    <label for="coach" style="color: #C9D1D9">Choose a coach:</label>
     <select name="coach" id="coach">
         {% for coach in coaches %}
             <option value="{{ coach }}">{{ coach }}</option>
         {% endfor %}
     </select>
-    <label for="cohort">Choose a cohort:</label>
+    <label for="cohort" style="color: #C9D1D9">Choose a cohort:</label>
     <select name="cohort" id="cohort">
     </select>
-    <br><br>
     <button id="submit" type="button" value="Submit" onclick="buttonClick()">Submit</button>
-    <br><br>
+    </div>
 
     <div id="root"></div>
 
@@ -46,10 +46,13 @@
 
         Object.entries(results).forEach(pair => {
             let div = document.createElement("div");
+            div.style.borderRadius = "96px";
+            div.style.color = "#0D1117";
             root.appendChild(div);
             let [name, username] = pair;
             let header = document.createElement("h1");
             header.textContent = name;
+            header.style.color = "#C9D1D9";
             div.appendChild(header);
             let img = document.createElement("img");
             img.id = username;

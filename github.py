@@ -32,7 +32,7 @@ def extract_usernames(file: str):
 
 
 def get_api_key():
-    file = Path.cwd() / Path('github_token.txt')
+    file = Path.cwd() / Path('github_api_key.txt')
     try:
         with open(file, 'r') as r:
             return r.read().strip().replace("\n", "")
