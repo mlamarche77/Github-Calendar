@@ -1,8 +1,10 @@
 import base64
 import requests
 from datetime import datetime
+from datetime import date
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
+import matplotlib.colors as mcolors
 
 import numpy as np
 import pandas as pd
@@ -84,6 +86,8 @@ class Contribution:
         self.contributions = []
         self.week = []
         self.activity = []
+        self.months = []
+        self.__skip = None
         self.id = self.UID
         Contribution.UID += 1
 
@@ -93,7 +97,7 @@ class Contribution:
             sleep(0.05)
         fig = self.plot()
         tmpfile = BytesIO()
-        plt.savefig(tmpfile, format='png')
+        plt.savefig(tmpfile, format='png', transparent=True)
         encoded = base64.b64encode(tmpfile.getvalue()).decode('utf-8')
         plt.close(fig)
         Contribution.CURRENT += 1
@@ -102,12 +106,10 @@ class Contribution:
     def calculate(self):
         for i, w in enumerate(self.data):
             for day in w:
-                week_day = day['date'].weekday()
-                if week_day == 6:
-                    self.weekday.append(7)
-                else:
-                    self.weekday.append(6 - week_day)
+                d = day['date']
+                self.save_week(d)
                 self.week.append(i)
+                self.save_month(d)
                 self.contributions.append(day['count'])
         for count in self.contributions:
             if count == 0:
@@ -123,9 +125,21 @@ class Contribution:
             else:
                 self.activity.append(0)
 
+    def save_month(self, d: date):
+        if d.month not in self.months or d.month != self.months[-1]:
+            self.months.append(d.month)
+
+    def save_week(self, date):
+        week_day = date.weekday()
+        if week_day == 6:
+            self.weekday.append(7)
+        else:
+            self.weekday.append(6 - week_day)
 
     def plot(self):
         self.calculate()
+        self.months = [val for i, val in enumerate(self.months[1:]) if i % 2 != 0] + [0]
+        print(self.months)
         df = pd.DataFrame({"weekday": self.weekday, "week": self.week, "activity": self.activity})
         df.drop_duplicates(subset=["weekday", "week"], inplace=True)
 
@@ -134,19 +148,29 @@ class Contribution:
         df2.fillna(0, inplace=True)
 
         Weekday, Week = np.mgrid[:df2.shape[0] + 1, :df2.shape[1] + 1]
+        masked = np.ma.masked_array(df2.values, df2.values <= 0)
+
         fig, ax = plt.subplots(figsize=(20, 3))
         ax.set_aspect("equal")
-        plt.pcolormesh(Week, Weekday, df2.values, cmap="Greens", edgecolor="w", vmin=0, vmax=4)
+
+        plt.pcolormesh(Week, Weekday, masked, cmap="Greens", edgecolor="#1F2836", vmin=0, vmax=4, rasterized=True)
         plt.xlim(0, df2.shape[1])
         week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat', ''][::-1]
         ax = plt.gca()
+        font_properties = {'family': 'sans-serif', 'weight': 'bold', 'size': '15'}
 
-        ticks_loc = ax.get_yticks().tolist()
-        ax.yaxis.set_major_locator(mticker.FixedLocator(ticks_loc))
-        ax.set_yticklabels(week)
+        yticks_loc = ax.get_yticks().tolist()
+        ax.yaxis.set_major_locator(mticker.FixedLocator(yticks_loc))
+        ax.set_yticklabels(week, fontdict=font_properties)
+        ax.yaxis.label.set_color('white')
+        ax.tick_params(axis='y', colors='white')
 
-        #ax.set_xticklabels(months)
-        ax.axes.xaxis.set_visible(False)
+        xticks_loc = ax.get_xticks().tolist()
+        ax.xaxis.set_major_locator(mticker.FixedLocator(xticks_loc))
+        ax.set_xticklabels(self.months, fontdict=font_properties)
+        ax.xaxis.label.set_color('white')
+        ax.tick_params(axis='x', colors='white')
+
         return fig
 
 
@@ -162,6 +186,8 @@ class GitHub:
         self.contribution = None
         self.profile_image = None
         self.url = None
+        self.data = None
+        self.graph = None
 
     def contribution_query(self):
         return """query { 
@@ -208,7 +234,8 @@ class GitHub:
                     'date': datetime.strptime(contri['date'], '%Y-%m-%d')
                 })
             contributions.append(week_data)
-        self.contribution = Contribution(contributions).embed()
+        self.data = Contribution(contributions)
+        self.graph = self.data.embed()
 
     def __str__(self):
         return f"Username: '{self.username}', url: '{self.url}'"
