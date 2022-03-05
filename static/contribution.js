@@ -62,7 +62,11 @@ function initalData(name, username){
 function getData(name, username){
     let results = initalData(name, username);
     fetch(`http://127.0.0.1:5000/contribution?username=${username}`)
-        .then(response => response.json())
+        .then(response => {
+            if (response.ok)
+                return response.json()
+            throw new Error(response.statusText);
+        })
         .then(data => {
             let graphImage = results.graphImage;
             graphImage.src = data.graph_image;
@@ -75,11 +79,14 @@ function getData(name, username){
             profileImage.height = "150";
             profileImage.style.display = "";
             results.url.href = data.url;
-        }).catch(error => {
-        console.log(error)
-        results.graphImage = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/1024px-ProhibitionSign2.svg.png"
-        results.profileImage = "https://icon-library.com/images/unknown-person-icon/unknown-person-icon-4.jpg"
-    })
+        })
+        .catch(error => {
+            console.log(error)
+            results.graphImage.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/1024px-ProhibitionSign2.svg.png"
+            results.profileImage.src = "https://icon-library.com/images/unknown-person-icon/unknown-person-icon-4.jpg"
+            results.profileImage.style.display = "";
+            results.graphImage.style.display = "";
+        })
     return results;
 }
 
@@ -136,15 +143,4 @@ window.addEventListener('DOMContentLoaded', e=>{
     })
     coach.options.selectedIndex = 0;
 })
-document.getElementById("coach").addEventListener('change', (e)=>{
-    let coach = e.currentTarget.options[e.currentTarget.selectedIndex].text;
-    let cohort = document.getElementById('cohort')
-    while (cohort.firstChild){
-        cohort.removeChild(cohort.firstChild)
-    }
 
-    addOption(cohort, "all");
-    Object.keys(tree[coach]).forEach(c => {
-      addOption(cohort, c);
-    })
-})

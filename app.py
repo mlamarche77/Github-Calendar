@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, Response
 from github import GitHub, Cohorts
 app = Flask(__name__)
 
@@ -18,7 +18,22 @@ def contribution():
     else:
         return ""
     git = GitHub(username)
-    git.fetch()
+    count = 0
+    fetched = False
+    while not fetched and count < 3:
+        try:
+            git.fetch()
+            fetched = True
+        except Exception:
+            pass
+        count += 1
+    if not fetched:
+        return jsonify({
+            "graph_image": git.graph,
+            "url": git.url,
+            "profile_image": git.profile_image,
+            "username": git.username
+        }), 500
     return jsonify({
         "graph_image": git.graph,
         "url": git.url,
