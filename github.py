@@ -221,7 +221,7 @@ class GitHub:
                 return data["errors"]
             return data['data']
         else:
-            return {resp.status_code: resp.reason}
+            raise ConnectionError(resp.reason)
 
     def fetch(self):
         query = self.contribution_query()
