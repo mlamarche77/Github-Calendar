@@ -42,6 +42,7 @@ function initalData(name, username){
 
     let url = document.createElement("a");
     url.href = "#";
+    url.target = "_blank";
 
     let top = document.createElement("h1");
     top.textContent = name;
