@@ -8,7 +8,7 @@
 <body onbeforeunload="setDefault()" style="background-color: #010409">
 
 {% set tree = tree %}
-    <div style="background-color: #0D1117; padding: 2em 2em 2em 2em; border-radius: 1rem; border: white 5em;">
+    <div style="background-color: #0D1117; margin: 1rem; padding: 2em 2em 2em 2em; border-radius: 1rem; border: white 5em;">
     <label for="coach" style="color: #C9D1D9">Choose a coach:</label>
     <select name="coach" id="coach">
         {% for coach in coaches %}
@@ -32,46 +32,113 @@
         }
     }
 
+    function userContainer(){
+        let root = document.getElementById("root");
+        let div = document.createElement("div");
+        div.style.borderRadius = "1rem";
+        div.style.backgroundColor = "#0D1117";
+        div.style.padding = "1rem 1rem 1rem 1rem";
+        div.style.margin = "1rem";
+        root.appendChild(div);
+        return div;
+    }
+
+    function addUser(div, name, username){
+        let data = getData(name, username);
+        div.appendChild(data.url);
+        div.appendChild(data.username);
+        div.appendChild(data.profileImage);
+        div.appendChild(data.graphImage);
+    }
+
+    function initalData(name, username){
+        let graphImage = document.createElement("img");
+        graphImage.src = "https://media0.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif?cid=ecf05e47qgat0gh5s49q8ymszpqlmseyaqzi10leo077t1td&rid=giphy.gif&ct=g"
+        graphImage.width = "50";
+        graphImage.height = "50";
+        graphImage.alt = `${username}_graph`
+
+        let profileImage = document.createElement("image")
+        profileImage.src = "https://media0.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif?cid=ecf05e47qgat0gh5s49q8ymszpqlmseyaqzi10leo077t1td&rid=giphy.gif&ct=g"
+        profileImage.width = "50";
+        profileImage.height = "50";
+        profileImage.alt = `${username}_profile`
+
+        let url = document.createElement("a");
+        url.href = "#";
+        url.style.color = "#C9D1D9";
+
+        let top = document.createElement("h1");
+        top.textContent = name;
+        top.style.color = "#C9D1D9";
+        url.appendChild(top);
+
+        let bottom = document.createElement("h3");
+        bottom.textContent = username;
+        bottom.style.color = "#C9D1D9";
+
+        return {
+            graphImage: graphImage,
+            url: url,
+            profileImage: profileImage,
+            username: bottom
+        };
+    }
+
+    function getData(name, username){
+        let results = initalData(name, username);
+        fetch(`http://127.0.0.1:5000/contribution?username=${username}`)
+            .then(response => response.json())
+            .then(data => {
+                let graphImage = results.graphImage;
+                graphImage.src = data.graph_image;
+                graphImage.width = "1000";
+                graphImage.height = "150";
+                let profileImage = results.profileImage;
+                profileImage.src = data.profile_image;
+                profileImage.width = "150";
+                profileImage.height = "150";
+                results.username.textContent = username;
+                results.url.href = data.url;
+            }).catch(error => {
+            console.log(error)
+            results.graphImage = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/1024px-ProhibitionSign2.svg.png"
+            results.profileImage = "https://icon-library.com/images/unknown-person-icon/unknown-person-icon-4.jpg"
+        })
+        return results;
+    }
+
+
+    function addOption(component, value){
+        let option = document.createElement("option");
+        option.value = value;
+        option.text = value;
+        component.appendChild(option)
+    }
+
 
     function buttonClick(e){
         clearRoot();
         let tree = {{ tree.root|tojson }};
-        let root = document.getElementById("root");
         let coach = document.getElementById('coach')
         let cohort = document.getElementById('cohort');
         let coach_text = coach.options[coach.selectedIndex].text;
         let cohort_text = cohort.options[cohort.selectedIndex].text;
 
-        let results = tree[coach_text][cohort_text];
+        let results = {};
+        if (cohort_text === 'all'){
+            Object.entries(tree[coach_text]).forEach(pair => {
+                let [cohort, users] = pair;
+                results = {...results, ...users};
+            });
+        } else{
+            results = tree[coach_text][cohort_text]
+        }
 
         Object.entries(results).forEach(pair => {
-            let div = document.createElement("div");
-            div.style.borderRadius = "96px";
-            div.style.color = "#0D1117";
-            root.appendChild(div);
+            let div = userContainer();
             let [name, username] = pair;
-            let header = document.createElement("h1");
-            header.textContent = name;
-            header.style.color = "#C9D1D9";
-            div.appendChild(header);
-            let img = document.createElement("img");
-            img.id = username;
-            img.alt = username;
-            img.src = "https://media0.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif?cid=ecf05e47qgat0gh5s49q8ymszpqlmseyaqzi10leo077t1td&rid=giphy.gif&ct=g";
-            fetch(`http://127.0.0.1:5000/contribution?username=${username}`).then(response =>{
-                //img.src = response.json()['src']
-                return response.json();
-            }).then(data =>{
-                img.width = "1000";
-                img.height = "150";
-                img.src = data.src;
-            }).catch(error => {
-                console.log(error)
-                img.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/1024px-ProhibitionSign2.svg.png"
-                img.width = "50";
-                img.height = "50";
-            })
-            div.appendChild(img);
+            addUser(div, name, username);
         })
     }
 
@@ -88,12 +155,11 @@
         while (cohort.firstChild){
             cohort.removeChild(cohort.firstChild)
         }
+
+        addOption(cohort, "all");
         let root = {{ tree.root|tojson }};
         Object.keys(root[coach_text]).forEach(c => {
-          let option = document.createElement("option");
-            option.value = c;
-            option.text = c;
-            cohort.appendChild(option)
+          addOption(cohort, c);
         })
         coach.options.selectedIndex = 0;
     })
@@ -103,17 +169,12 @@
         while (cohort.firstChild){
             cohort.removeChild(cohort.firstChild)
         }
+
+        addOption(cohort, "all");
         let root = {{ tree.root|tojson }};
         Object.keys(root[coach]).forEach(c => {
-          let option = document.createElement("option");
-            option.value = c;
-            option.text = c;
-            cohort.appendChild(option)
+          addOption(cohort, c);
         })
-    })
-
-    document.getElementById("submit").addEventListener("click", e =>{
-
     })
 
 </script>

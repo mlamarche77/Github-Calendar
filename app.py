@@ -19,7 +19,12 @@ def contribution():
         return ""
     git = GitHub(username)
     git.fetch()
-    return jsonify({"src": git.graph})
+    return jsonify({
+        "graph_image": git.graph,
+        "url": git.url,
+        "profile_image": git.profile_image,
+        "username": git.username
+    })
 
 
 if __name__ == '__main__':
