@@ -176,6 +176,7 @@ class Contribution:
         ax.set_xticklabels(self.months, fontdict=font_properties)
         ax.xaxis.label.set_color('white')
         ax.tick_params(axis='x', colors='white')
+        ax.axes.xaxis.set_visible(False)
 
         return fig
 

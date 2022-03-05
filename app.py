@@ -20,7 +20,7 @@ def contribution():
     git = GitHub(username)
     count = 0
     fetched = False
-    while not fetched and count < 3:
+    while not fetched and count < 2:
         try:
             git.fetch()
             fetched = True
