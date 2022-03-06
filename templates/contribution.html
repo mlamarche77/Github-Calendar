@@ -13,13 +13,13 @@
 
 <body onbeforeunload="setDefault()">
     <div class="options-container">
-    <label for="coach">Choose a coach:</label>
+    <label>Choose a coach:</label>
     <select name="coach" id="coach">
         {% for coach in coaches %}
             <option value="{{ coach }}">{{ coach }}</option>
         {% endfor %}
     </select>
-    <label for="cohort">Choose a cohort:</label>
+    <label>Choose a cohort:</label>
     <select name="cohort" id="cohort">
     </select>
     <button id="submit" type="button" value="Submit" onclick="buttonClick()">Submit</button>

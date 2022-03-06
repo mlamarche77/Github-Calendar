@@ -129,6 +129,7 @@ function setDefault(){
     let cohort = document.getElementById('cohort');
     cohort.options.selectedIndex = -1;
 }
+
 window.addEventListener('DOMContentLoaded', e=>{
     let coach = document.getElementById('coach')
     let coach_text = coach.options[coach.selectedIndex].text;
@@ -142,5 +143,22 @@ window.addEventListener('DOMContentLoaded', e=>{
       addOption(cohort, c);
     })
     coach.options.selectedIndex = 0;
+
+    onCoachChange();
 })
 
+function onCoachChange(){
+    document.getElementById("coach").addEventListener('change', (e)=>{
+        let coach = e.currentTarget.options[e.currentTarget.selectedIndex].text;
+        let cohort = document.getElementById('cohort')
+        console.log(coach);
+        while (cohort.firstChild){
+            cohort.removeChild(cohort.firstChild)
+        }
+
+        addOption(cohort, "all");
+        Object.keys(tree[coach]).forEach(c => {
+          addOption(cohort, c);
+        })
+    })
+}
