@@ -61,7 +61,7 @@ function initalData(name, username){
 
 function getData(name, username){
     let results = initalData(name, username);
-    fetch(`http://127.0.0.1:5000/contribution?username=${username}`)
+    fetch(`/contribution?username=${username}`)
         .then(response => {
             if (response.ok)
                 return response.json()
