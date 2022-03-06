@@ -151,7 +151,6 @@ function onCoachChange(){
     document.getElementById("coach").addEventListener('change', (e)=>{
         let coach = e.currentTarget.options[e.currentTarget.selectedIndex].text;
         let cohort = document.getElementById('cohort')
-        console.log(coach);
         while (cohort.firstChild){
             cohort.removeChild(cohort.firstChild)
         }
