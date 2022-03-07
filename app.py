@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def form():
-    tree = Cohorts("static/github.csv")
+    tree = Cohorts("github.csv")
     return render_template("contribution.html", tree=tree, coaches=tree.coaches())
 
 

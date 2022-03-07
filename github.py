@@ -14,8 +14,9 @@ from pathlib import Path
 
 
 def csv_data(file: str):
-    assert Path(file).exists(), f"File doesn't exist: {file}"
-    with open(file, newline='') as csvfile:
+    path = Path.cwd() / Path('static') / Path(file)
+    assert path.exists(), f"File doesn't exist: {path}"
+    with open(path, newline='') as csvfile:
         return list(csv.reader(csvfile, delimiter=','))
 
 
@@ -33,13 +34,13 @@ def extract_usernames(file: str):
 
 
 def get_api_key():
-    file = Path.cwd() / Path('static/github_api_key.txt')
-    print(file)
+    path = Path.cwd() / Path('static') / Path('github_api_key.txt')
+    assert path.exists(), f"File doesn't exist: {path}"
     try:
-        with open(file, 'r') as r:
+        with open(path, 'r') as r:
             return r.read().strip().replace("\n", "")
     except Exception:
-        if not file.exists():
+        if not path.exists():
             print('\033[93mWarning: github_token.txt is not found in current working directory.\033[0m')
             print('\033[34mCreate the file and paste your GitHub API token to use GitHubs GraphQL API.\033[0m')
 
