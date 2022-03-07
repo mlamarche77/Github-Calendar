@@ -4,7 +4,6 @@ from datetime import datetime
 from datetime import date
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
-import matplotlib.colors as mcolors
 
 import numpy as np
 import pandas as pd
