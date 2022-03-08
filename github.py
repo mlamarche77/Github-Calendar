@@ -20,6 +20,24 @@ def csv_data(file: str):
         return list(csv.reader(csvfile, delimiter=','))
 
 
+def save_csv(file_name, data):
+    path = Path.cwd() / Path('static') / Path(file_name)
+    with open(path, 'w') as w:
+        w.write(data)
+
+
+def upload_csv(data):
+    try:
+        save_csv('temp.csv', data)
+        data = csv_data('temp.csv')
+        save_csv('github.csv')
+        path = Path.cwd() / Path('static') / Path('temp.csv')
+        path.unlink()
+    except Exception as e:
+        print(f'\033[31m{e}\033[0m')
+        print("Error trying to save file: github.csv")
+
+
 def extract(file: str):
     contents = csv_data(file)
     data = contents[1:]

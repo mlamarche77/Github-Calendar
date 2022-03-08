@@ -7,25 +7,27 @@
     <script type="text/javascript" src="../static/contribution.js"></script>
     {% set tree = tree %}
     <script>
-        let tree = {{ tree.root|tojson }};
+        let tree = {{tree.root | tojson}};
     </script>
 </head>
 
 <body onbeforeunload="setDefault()">
-    <div class="options-container">
+
+<div class="options-container">
     <label>Choose a coach:</label>
     <select name="coach" id="coach">
         {% for coach in coaches %}
-            <option value="{{ coach }}">{{ coach }}</option>
+        <option value="{{ coach }}">{{ coach }}</option>
         {% endfor %}
     </select>
     <label>Choose a cohort:</label>
     <select name="cohort" id="cohort">
     </select>
     <button id="submit" type="button" value="Submit" onclick="buttonClick()">Submit</button>
-    </div>
+    <input type="file" id="file" class="file" name="file" accept=".csv">
+</div>
 
-    <div id="root"></div>
+<div id="root"></div>
 </body>
 
 </html>

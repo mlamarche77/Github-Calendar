@@ -23,6 +23,24 @@ button {
     box-shadow: 5px 5px 18px black;
 }
 
+.file {
+    color: #f0f6fc;
+    font-weight: 500;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    background-color: #1f6feb;
+    margin: 1rem;
+    padding: 0.3rem;
+    border-radius: 0.3333rem;
+    width: 5rem;
+    height: 2rem;
+    box-shadow: 5px 5px 18px black;
+    filter:alpha(opacity: 0)
+}
+
+.file:hover {
+    background-color: #1b60cb;
+}
+
 button:hover {
     background-color: #1b60cb;
 }
@@ -51,6 +69,7 @@ select:active {
 select:focus {
     border: none;
 }
+
 
 label {
     color: #C9D1D9;
