@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, Response
+from flask import Flask, render_template, request, jsonify
 from secrets import token_urlsafe
 from github import GitHub, Cohorts
 from pathlib import Path
