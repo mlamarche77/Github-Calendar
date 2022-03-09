@@ -33,15 +33,7 @@ function searchContributions(e){
         let coach_text = coach.options[coach.selectedIndex].text;
         let cohort_text = cohort.options[cohort.selectedIndex].text;
 
-        let results = {};
-        if (cohort_text === 'all') {
-            Object.entries(tree[coach_text]).forEach(pair => {
-                let [cohort, users] = pair;
-                results = {...results, ...users};
-            });
-        } else {
-            results = tree[coach_text][cohort_text]
-        }
+        let results = tree[coach_text][cohort_text];
         let students = getStudents();
         Object.entries(results).forEach(pair => {
             let div = userContainer();

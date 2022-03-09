@@ -68,6 +68,8 @@ class Cohorts:
     def __init__(self, file: str = None):
         self.root = {}
         self.students = {}
+        self.coaches = {}
+        self.cohorts = {}
         if file is None:
             return
         path = Path.cwd() / Path('static') / Path(file)
@@ -91,10 +93,13 @@ class Cohorts:
         for coach, coh_tree in self.root.items():
             if coach == 'all':
                 continue
+            print(f"Coach:\t{coach}")
             self.root[coach]['all'] = {}
             for dates, student_tree in coh_tree.items():
                 if dates == 'all':
                     continue
+                print(f"\tCohort:\t\t{dates}")
+                print(f"\tStudents:\t{student_tree}")
                 self.root[coach]['all'].update(student_tree)
                 if dates not in self.root['all']:
                     self.root['all'][dates] = student_tree
@@ -103,6 +108,7 @@ class Cohorts:
                 self.root['all']['all'].update(student_tree)
                 for name, username in student_tree.items():
                     self.students[username] = {'name': name, 'coach': coach, 'username': username, 'cohort': dates}
+            print("\n")
 
     def coaches(self):
         return self.root.keys()
