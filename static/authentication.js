@@ -51,7 +51,7 @@ function loginError(message){
     label.textContent = "";
     let timeoutId = setTimeout(() => {
         label.textContent = message;
-    }, 200)
+    }, 200);
 }
 
 function login(e){
