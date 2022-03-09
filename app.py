@@ -9,29 +9,6 @@ app = Flask(__name__)
 app.secret_key = "FkDAg7MUxxAuXe3WYICZwg"
 
 
-def save_session():
-    path = Path.cwd() / Path("static") / Path("sessions.json")
-    if path.exists():
-        with open(path, 'r') as r:
-            sessions = json.load(r)
-    else:
-        sessions = {}
-    time = datetime.now().strftime("%m/%d/%Y - %H:%M:%S")
-    token = token_urlsafe(16)
-    session['session_token'] = token
-    sessions[token] = time
-    with open(path, 'w') as w:
-        json.dump(sessions, w)
-
-
-def valid_session():
-    path = Path.cwd() / Path("static") / Path("sessions.json")
-    if 'session_token' not in session or not path.exists():
-        return False
-    with open(path, 'r') as r:
-        return session['session_token'] in json.load(r)
-
-
 def authenticate(password):
     path = Path.cwd() / Path("static") / Path("password.txt")
     if path.exists():
@@ -43,7 +20,6 @@ def authenticate(password):
 def create_session():
     if 'password' in request.form:
         if authenticate(request.form['password']):
-            save_session()
             path = Path.cwd() / Path('static') / Path('github.csv')
             cohorts = Cohorts(path)
             return jsonify(cohorts.root)
@@ -52,19 +28,7 @@ def create_session():
 
 @app.route('/')
 def home():
-    loggedin = valid_session()
-    tree = loggedin and Cohorts('github.csv') or Cohorts()
-    return render_template("contribution.html", tree=tree)
-
-
-
-@app.route('/logout')
-def logout():
-    tree = Cohorts()
-    del session['session_token']
-    return render_template("contribution.html", tree=tree)
-
-
+    return render_template("contribution.html")
 
 
 @app.route('/contribution', methods=['POST', 'GET'])
