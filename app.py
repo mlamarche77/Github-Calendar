@@ -13,7 +13,7 @@ def authenticate(password):
     path = Path.cwd() / Path("static") / Path("password.txt")
     if path.exists():
         with open(path, 'r') as r:
-            return password == r.read()
+            return password == r.read().strip()
 
 
 @app.route('/session', methods=['POST'])
