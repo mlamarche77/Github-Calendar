@@ -10,7 +10,7 @@ function clearRoot(){
 function getTree(){
     let local = localStorage.getItem('appacademycoaches');
     if (local)
-        return JSON.parse(local)
+        return JSON.parse(local).root
     return {};
 }
 
@@ -22,15 +22,16 @@ function userContainer(){
     return div;
 }
 
-function addUser(div, name, username){
-    let data = getData(name, username);
+function addUser(div, name, username, coach, cohort){
+    let data = getData(name, username, coach, cohort);
     div.appendChild(data.name);
+    div.appendChild(data.coach);
     div.appendChild(data.url);
     div.appendChild(data.profileImage);
     div.appendChild(data.graphImage);
 }
 
-function initalData(name, username){
+function initalData(name, username, coach, cohort){
     let graphImage = document.createElement("img");
     graphImage.className = "graph-image"
     graphImage.src = "https://media0.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif?cid=ecf05e47qgat0gh5s49q8ymszpqlmseyaqzi10leo077t1td&rid=giphy.gif&ct=g"
@@ -52,22 +53,26 @@ function initalData(name, username){
     url.target = "_blank";
 
     let top = document.createElement("h1");
-    top.textContent = name;
+    top.textContent = `${name} - ${cohort}`;
 
     let bottom = document.createElement("h3");
     bottom.textContent = `GitHub: ${username}`;
     url.appendChild(bottom);
 
+    let coachLabel = document.createElement("h4");
+    coachLabel.textContent = `Coach: ${coach}`;
+
     return {
         name: top,
         graphImage: graphImage,
         url: url,
-        profileImage: profileImage
+        profileImage: profileImage,
+        coach: coachLabel
     };
 }
 
-function getData(name, username){
-    let results = initalData(name, username);
+function getData(name, username, coach, cohort){
+    let results = initalData(name, username, coach, cohort);
     fetch(`/contribution?username=${username}`, {signal: controller.signal})
         .then(response => {
             if (response.ok)

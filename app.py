@@ -22,7 +22,7 @@ def create_session():
         if authenticate(request.form['password']):
             path = Path.cwd() / Path('static') / Path('github.csv')
             cohorts = Cohorts(path)
-            return jsonify(cohorts.root)
+            return jsonify({'root': cohorts.root, 'students': cohorts.students})
     return jsonify({'error': "Invalid Password"})
 
 

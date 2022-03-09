@@ -67,6 +67,7 @@ def get_api_key():
 class Cohorts:
     def __init__(self, file: str = None):
         self.root = {}
+        self.students = {}
         if file is None:
             return
         path = Path.cwd() / Path('static') / Path(file)
@@ -88,14 +89,20 @@ class Cohorts:
     def add_all(self):
         self.root['all'] = {'all': {}}
         for coach, coh_tree in self.root.items():
+            if coach == 'all':
+                continue
             self.root[coach]['all'] = {}
             for dates, student_tree in coh_tree.items():
+                if dates == 'all':
+                    continue
                 self.root[coach]['all'].update(student_tree)
                 if dates not in self.root['all']:
                     self.root['all'][dates] = student_tree
                 else:
                     self.root['all'][dates].update(student_tree)
                 self.root['all']['all'].update(student_tree)
+                for name, username in student_tree.items():
+                    self.students[username] = {'name': name, 'coach': coach, 'username': username, 'cohort': dates}
 
     def coaches(self):
         return self.root.keys()

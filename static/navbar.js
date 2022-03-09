@@ -1,7 +1,14 @@
 function getTree(){
     let local = localStorage.getItem('appacademycoaches');
     if (local)
-        return JSON.parse(local)
+        return JSON.parse(local).root
+    return {};
+}
+
+function getStudents(){
+    let local = localStorage.getItem('appacademycoaches');
+    if (local)
+        return JSON.parse(local).students
     return {};
 }
 
@@ -35,11 +42,12 @@ function searchContributions(e){
         } else {
             results = tree[coach_text][cohort_text]
         }
-
+        let students = getStudents();
         Object.entries(results).forEach(pair => {
             let div = userContainer();
             let [name, username] = pair;
-            addUser(div, name, username);
+            let student = students[username];
+            addUser(div, name, username, student.coach, student.cohort);
         })
     }
 }
@@ -76,7 +84,8 @@ function onCoachChange(){
 
             addOption(cohort, "all");
             Object.keys(tree[coach]).forEach(c => {
-                addOption(cohort, c);
+                if (c !== 'all')
+                    addOption(cohort, c);
             })
         }
     })
