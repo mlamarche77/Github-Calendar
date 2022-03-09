@@ -13,10 +13,9 @@ import csv
 from pathlib import Path
 
 
-def csv_data(file: str):
-    path = Path.cwd() / Path('static') / Path(file)
-    assert path.exists(), f"File doesn't exist: {path}"
-    with open(path, newline='') as csvfile:
+def csv_data(file: Path):
+    assert file.exists(), f"File doesn't exist: {file}"
+    with open(file, newline='') as csvfile:
         return list(csv.reader(csvfile, delimiter=','))
 
 
@@ -38,7 +37,9 @@ def upload_csv(data):
         print("Error trying to save file: github.csv")
 
 
-def extract(file: str):
+def extract(file: Path):
+    if not file or not file.exists():
+        return []
     contents = csv_data(file)
     data = contents[1:]
     return [line for line in data]
@@ -64,10 +65,14 @@ def get_api_key():
 
 
 class Cohorts:
-    def __init__(self, file: str):
+    def __init__(self, file: str = None):
         self.root = {}
-        for line in extract(file):
+        if file is None:
+            return
+        path = Path.cwd() / Path('static') / Path(file)
+        for line in extract(path):
             self.add(line)
+        self.add_all()
 
     def add(self, data: list):
         base = self.root
@@ -79,6 +84,18 @@ class Cohorts:
                 if top not in base:
                     base[top] = {}
                 base = base[top]
+
+    def add_all(self):
+        self.root['all'] = {'all': {}}
+        for coach, coh_tree in self.root.items():
+            self.root[coach]['all'] = {}
+            for dates, student_tree in coh_tree.items():
+                self.root[coach]['all'].update(student_tree)
+                if dates not in self.root['all']:
+                    self.root['all'][dates] = student_tree
+                else:
+                    self.root['all'][dates].update(student_tree)
+                self.root['all']['all'].update(student_tree)
 
     def coaches(self):
         return self.root.keys()
@@ -93,8 +110,6 @@ class Cohorts:
 
     def all(self, coach):
         return [val for arr in self.root[coach].values() for val in arr]
-
-
 
     def __str__(self):
         return str(self.root)
@@ -270,11 +285,9 @@ class GitHub:
         return f"<GitHub"
 
 
-
 if __name__ == "__main__":
     username = "mjlomeli"
     git = GitHub(username)
     git.fetch()
     print(git)
     print(git.contribution)
-

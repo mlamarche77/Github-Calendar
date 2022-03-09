@@ -1,29 +1,12 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session
 from secrets import token_urlsafe
 from github import GitHub, Cohorts
 from pathlib import Path
 from datetime import datetime
 import json
-import re
 
 app = Flask(__name__)
 app.secret_key = "FkDAg7MUxxAuXe3WYICZwg"
-
-
-def extract_inputs(name):
-    data = {}
-    for input_name in request.form:
-        key = re.sub(r'\[.*?\]', '', input_name)
-        if name == key:
-            found = re.findall(r'\[(.*)\]', input_name)
-            if len(found) > 0:
-                data[found[0]] = request.form[input_name]
-    return data
-
-
-def session_params():
-    if 'session' in request.form:
-        return extract_inputs('session')
 
 
 def save_session():
@@ -35,37 +18,53 @@ def save_session():
         sessions = {}
     time = datetime.now().strftime("%m/%d/%Y - %H:%M:%S")
     token = token_urlsafe(16)
+    session['session_token'] = token
     sessions[token] = time
     with open(path, 'w') as w:
         json.dump(sessions, w)
-    return token
 
 
-def authentication():
-    path = Path.cwd() / Path("static") / Path("pass.txt")
+def valid_session():
+    path = Path.cwd() / Path("static") / Path("sessions.json")
+    if 'session_token' not in session or not path.exists():
+        return False
+    with open(path, 'r') as r:
+        return session['session_token'] in json.load(r)
+
+
+def authenticate(password):
+    path = Path.cwd() / Path("static") / Path("password.txt")
     if path.exists():
         with open(path, 'r') as r:
-            return r.read()
+            return password == r.read()
 
 
 @app.route('/session', methods=['POST'])
 def create_session():
-    password = request.form['password']
-    print(password)
-    print(authentication())
-    if password != authentication():
-        return jsonify({"error": "Invalid password"})
-    token = save_session()
-    return jsonify({"session_token": token})
+    if 'password' in request.form:
+        if authenticate(request.form['password']):
+            save_session()
+            path = Path.cwd() / Path('static') / Path('github.csv')
+            cohorts = Cohorts(path)
+            return jsonify(cohorts.root)
+    return jsonify({'error': "Invalid Password"})
 
 
 @app.route('/')
-def form():
-    session = session_params()
-    if session:
-        tree = Cohorts("github.csv")
-        return render_template("contribution.html", tree=tree, coaches=tree.coaches())
-    return render_template('new.html')
+def home():
+    loggedin = valid_session()
+    tree = loggedin and Cohorts('github.csv') or Cohorts()
+    return render_template("contribution.html", tree=tree)
+
+
+
+@app.route('/logout')
+def logout():
+    tree = Cohorts()
+    del session['session_token']
+    return render_template("contribution.html", tree=tree)
+
+
 
 
 @app.route('/contribution', methods=['POST', 'GET'])

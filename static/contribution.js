@@ -7,6 +7,13 @@ function clearRoot(){
     }
 }
 
+function getTree(){
+    let local = localStorage.getItem('appacademycoaches');
+    if (local)
+        return JSON.parse(local)
+    return {};
+}
+
 function userContainer(){
     let root = document.getElementById("root");
     let div = document.createElement("div");
@@ -61,7 +68,7 @@ function initalData(name, username){
 
 function getData(name, username){
     let results = initalData(name, username);
-    fetch(`/contribution?username=${username}`)
+    fetch(`/contribution?username=${username}`, {signal: controller.signal})
         .then(response => {
             if (response.ok)
                 return response.json()
@@ -91,73 +98,9 @@ function getData(name, username){
 }
 
 
-function addOption(component, value){
-    let option = document.createElement("option");
-    option.value = value;
-    option.text = value;
-    component.appendChild(option)
-}
-
-
-function buttonClick(e){
-    clearRoot();
-    let coach = document.getElementById('coach')
-    let cohort = document.getElementById('cohort');
-    let coach_text = coach.options[coach.selectedIndex].text;
-    let cohort_text = cohort.options[cohort.selectedIndex].text;
-
-    let results = {};
-    if (cohort_text === 'all'){
-        Object.entries(tree[coach_text]).forEach(pair => {
-            let [cohort, users] = pair;
-            results = {...results, ...users};
-        });
-    } else{
-        results = tree[coach_text][cohort_text]
-    }
-
-    Object.entries(results).forEach(pair => {
-        let div = userContainer();
-        let [name, username] = pair;
-        addUser(div, name, username);
-    })
-}
-
 function setDefault(){
     let coach = document.getElementById('coach')
     coach.options.selectedIndex = 0;
     let cohort = document.getElementById('cohort');
     cohort.options.selectedIndex = -1;
-}
-
-window.addEventListener('DOMContentLoaded', e=>{
-    let coach = document.getElementById('coach')
-    let coach_text = coach.options[coach.selectedIndex].text;
-    let cohort = document.getElementById('cohort')
-    while (cohort.firstChild){
-        cohort.removeChild(cohort.firstChild)
-    }
-
-    addOption(cohort, "all");
-    Object.keys(tree[coach_text]).forEach(c => {
-      addOption(cohort, c);
-    })
-    coach.options.selectedIndex = 0;
-
-    onCoachChange();
-})
-
-function onCoachChange(){
-    document.getElementById("coach").addEventListener('change', (e)=>{
-        let coach = e.currentTarget.options[e.currentTarget.selectedIndex].text;
-        let cohort = document.getElementById('cohort')
-        while (cohort.firstChild){
-            cohort.removeChild(cohort.firstChild)
-        }
-
-        addOption(cohort, "all");
-        Object.keys(tree[coach]).forEach(c => {
-          addOption(cohort, c);
-        })
-    })
 }

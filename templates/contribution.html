@@ -4,27 +4,24 @@
     <meta charset="UTF-8">
     <title>App Academy Coaches</title>
     <link rel="stylesheet" href="../static/style.css"/>
+    <script type="text/javascript" src="../static/authentication.js"></script>
+    <script type="text/javascript" src="../static/navbar.js"></script>
     <script type="text/javascript" src="../static/contribution.js"></script>
-    {% set tree = tree %}
-    <script>
-        let tree = {{tree.root | tojson}};
-    </script>
 </head>
 
 <body onbeforeunload="setDefault()">
 
-<div class="options-container">
+<div id="login-dashboard">
+</div>
+
+<div id="options" class="options-container">
     <label>Choose a coach:</label>
     <select name="coach" id="coach">
-        {% for coach in coaches %}
-        <option value="{{ coach }}">{{ coach }}</option>
-        {% endfor %}
     </select>
     <label>Choose a cohort:</label>
     <select name="cohort" id="cohort">
     </select>
-    <button id="submit" type="button" value="Submit" onclick="buttonClick()">Submit</button>
-    <input type="file" id="file" class="file" name="file" accept=".csv">
+    <button id="submit" type="button" onclick="searchContributions()">Submit</button>
 </div>
 
 <div id="root"></div>
