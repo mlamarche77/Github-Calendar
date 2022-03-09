@@ -10,6 +10,7 @@ function addLoginComponent(){
     password.type = "password";
     password.name = "password";
     password.id = "password";
+    password.onkeyup = enter.bind(this);
     label.appendChild(password)
     div.appendChild(label);
 
@@ -40,6 +41,19 @@ function removeLoginComponent(){
         label.remove();
 }
 
+function enter(e){
+    if (e.keyCode === 13)
+        login();
+}
+
+function loginError(message){
+    let label = document.getElementById('error');
+    label.textContent = "";
+    let timeoutId = setTimeout(() => {
+        label.textContent = message;
+    }, 200)
+}
+
 function login(e){
     let password = document.getElementById('password');
     let formData = new FormData()
@@ -48,7 +62,7 @@ function login(e){
         .then(resp => resp.json())
         .then(data => {
             if (data.error)
-                document.getElementById('error').textContent = data.error;
+                loginError(data.error);
             else{
                 localStorage.setItem('appacademycoaches', JSON.stringify(data));
                 reloadTree();
