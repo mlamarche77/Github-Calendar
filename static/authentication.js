@@ -81,17 +81,48 @@ function removeLogoutComponent(){
     let button = document.getElementById('logout');
     if (button)
         button.remove();
+    let file = document.getElementById('file');
+    if (file)
+        file.remove();
+    let fileLabel = document.getElementById('fileLabel');
+    if (fileLabel)
+        fileLabel.remove();
+    let fileSpan = document.getElementById('fileSpan');
+    if (fileSpan)
+        fileSpan.remove();
 }
 
 function addLogoutComponent(){
     removeLogoutComponent();
     let options = document.getElementById('options');
     let button = document.createElement('button');
+    let file = document.createElement('input');
+    let fileLabel = document.createElement('label');
+    let fileSpan = document.createElement('span');
+
     button.id = "logout";
     button.type = "button";
     button.textContent = "Logout";
     button.onclick = logout.bind(this);
     options.appendChild(button);
+
+    file.type = "file";
+    file.id = "file";
+    fileLabel.id = "fileLabel"
+    fileLabel.htmlFor = "file";
+    fileLabel.textContent = "Upload csv file";
+    fileLabel.className = "file";
+    file.hidden = true;
+    fileSpan.id = "fileSpan";
+    fileSpan.textContent = "No file chosen";
+
+    file.addEventListener('change', (e) => {
+        fileSpan.textContent = e.currentTarget.files[0].name;
+    })
+
+    options.appendChild(file);
+    options.appendChild(fileLabel);
+    options.appendChild(fileSpan);
 }
 
 function logout(){
