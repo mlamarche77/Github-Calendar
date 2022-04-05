@@ -117,7 +117,24 @@ function addLogoutComponent(){
     fileSpan.textContent = "No file chosen";
 
     file.addEventListener('change', (e) => {
-        fileSpan.textContent = e.currentTarget.files[0].name;
+        let file = e.currentTarget.files[0];
+        let fileName = file.name;
+        fileSpan.textContent = fileName;
+        let formData = new FormData();
+        formData.append('file', file, fileName);
+        fetch('/upload', { method: 'POST', body: formData })
+            .then(resp => resp.json())
+            .then(data => {
+                if (data.error)
+                    console.log("Got an error.");
+                else{
+                    reloadTree();
+                }
+            })
+            .catch(error => {
+                error.textContent = error.toString();
+                console.log(error)
+            })
     })
 
     options.appendChild(file);
