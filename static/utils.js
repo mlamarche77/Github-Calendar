@@ -20,11 +20,11 @@ function authenticate(password){
 function hasUpdates(){
     return fetch('/updates', { method: 'GET' })
         .then(resp => resp.json())
-        .then(data => {
+        .then(date => {
             let localDate = localStorage.getItem('date');
-            if (localDate === data.date)
+            if (localDate === date)
                 return false;
-            localStorage.setItem('date', data.date);
+            localStorage.setItem('date', date);
             return true;
         })
         .catch(error => {
@@ -55,6 +55,6 @@ function upload(e){
         .then(resp => resp.json())
         .then(data => reloadTree())
         .catch(error => {
-            fileSpan.textContent = error.toString();
+            fileSpan.textContent = "file not compatible";
         })
 }

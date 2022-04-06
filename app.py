@@ -35,7 +35,7 @@ def authenticated():
 
 @app.route('/updates', methods=['GET'])
 def updates():
-    return jsonify({'date': latest_updates()})
+    return jsonify(latest_updates())
 
 
 @app.route('/upload', methods=['POST'])
