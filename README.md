@@ -36,8 +36,8 @@ Then generate the token.
 root@ubuntu:~# apt update
 root@ubuntu:~# apt upgrade
 root@ubuntu:~# apt install python3-pip python3-dev build-essential libssl-dev libffi-dev python3-setuptools
-root@ubuntu:~# apt install python3-venv nginx python3-certbot-nginx
-root@ubuntu:~# apt install git curl build-essential
+root@ubuntu:~# apt install python3-venv nginx
+root@ubuntu:~# apt install git curl build-essential python3-certbot-nginx
 root@ubuntu:~# pip3 install wheel gunicorn flask matplotlib numpy requests pandas
 ```
 
@@ -102,7 +102,7 @@ After=network.target
 [Service]
 User=root
 Group=www-data
-WorkingDirectory=/home/myproject
+WorkingDirectory=/home/Github-Calendar
 Environment="PATH=/home/Github-Calendar/env/bin"
 ExecStart=/home/Github-Calendar/bin/gunicorn --workers 3 --bind unix:app.sock -m 007 wsgi:app
 
