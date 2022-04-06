@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, session
 from secrets import token_urlsafe
 from github import GitHub, Cohorts
+from config import latest_updates, is_password
 from pathlib import Path
 from datetime import datetime
 import json
@@ -10,17 +11,10 @@ app = Flask(__name__)
 app.secret_key = "FkDAg7MUxxAuXe3WYICZwg"
 
 
-def authenticate(password):
-    path = Path.cwd() / Path("static") / Path("password.txt")
-    if path.exists():
-        with open(path, 'r') as r:
-            return password == r.read().strip()
-
-
 @app.route('/session', methods=['POST'])
 def create_session():
     if 'password' in request.form:
-        if authenticate(request.form['password']):
+        if is_password(request.form['password']):
             path = Path.cwd() / Path('static') / Path('github.csv')
             cohorts = Cohorts(path)
             return jsonify({'root': cohorts.root, 'students': cohorts.students})
@@ -32,12 +26,14 @@ def home():
     return render_template("contribution.html")
 
 
+@app.route('/authenticated', methods=['POST'])
+def authenticated():
+    return jsonify({'authenticated': is_password(request.form['password'])})
+
+
 @app.route('/updates', methods=['GET'])
 def updates():
-    file = Path.cwd() / Path('static') / Path('github.csv')
-    unix_time = os.path.getmtime(file)
-    date = datetime.fromtimestamp(unix_time)
-    return jsonify({'date': str(date)})
+    return jsonify({'date': latest_updates()})
 
 
 @app.route('/contribution', methods=['POST', 'GET'])

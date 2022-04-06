@@ -1,3 +1,24 @@
+function clearUserComponents(){
+    let root = document.getElementById("root");
+    while (root.firstChild){
+        root.removeChild(root.firstChild);
+    }
+}
+
+function login(e){
+    let password = document.getElementById('password');
+    localStorage.setItem('pss', password.value);
+    loginStatus().then(isLoggedIn => {
+        if (isLoggedIn){
+            removeLoginComponent();
+            addLogoutComponent();
+            reloadTree();
+        } else {
+            loginError("Invalid password");
+        }
+    })
+}
+
 function addLoginComponent(){
     removeLoginComponent();
     let div = document.getElementById('login-dashboard');
@@ -10,7 +31,7 @@ function addLoginComponent(){
     password.type = "password";
     password.name = "password";
     password.id = "password";
-    password.onkeyup = enter.bind(this);
+    password.onkeyup = enter_key_listener.bind(this);
     label.appendChild(password)
     div.appendChild(label);
 
@@ -41,11 +62,6 @@ function removeLoginComponent(){
         label.remove();
 }
 
-function enter(e){
-    if (e.keyCode === 13)
-        login();
-}
-
 function loginError(message){
     let label = document.getElementById('error');
     label.textContent = "";
@@ -54,49 +70,20 @@ function loginError(message){
     }, 200);
 }
 
-function getTree(){
-    // check that the version is correct
-    let data = {}
-    hasUpdates().then(updates =>{
-        if (updates){
-            let localPss = localStorage.getItem('pss');
-            authenticate(localPss).then(responseData =>{
-                Object.values(data).forEach(key => delete data[key]);
-                if (responseData.error) {
-                }
-                else {
-                    localStorage.setItem('appacademycoaches', JSON.stringify(responseData));
-                    Object.assign(data, responseData);
-                }
-            })
-        } else {
-            let local = localStorage.getItem('appacademycoaches');
-            if (local) {
-                Object.values(data).forEach(key => delete data[key]);
-                Object.assign(data, JSON.parse(local).root);
-            }
-        }
-    })
-    return data
+function enter_key_listener(e){
+    if (e.keyCode === 13)
+        login();
 }
 
-function login(e){
-    let password = document.getElementById('password');
-    authenticate(password.value).then(data => {
-        if (data.error) {
-            loginError(data.error);
-        }
-        else {
-            localStorage.setItem('appacademycoaches', JSON.stringify(data));
-            localStorage.setItem('pss', password.value);
-            reloadTree();
-            removeLoginComponent();
-            addLogoutComponent();
-        }
-    }).catch(error => {
-        error.textContent = error.toString();
-        console.log(error);
-    });
+
+
+function logout(){
+    controller.abort();
+    addLoginComponent();
+    localStorage.clear();
+    removeLogoutComponent();
+    reloadTree();
+    clearRoot();
 }
 
 function removeLogoutComponent(){
@@ -160,21 +147,23 @@ function addLogoutComponent(){
     options.appendChild(fileLabel);
 }
 
-function logout(){
-    controller.abort();
-    addLoginComponent();
-    localStorage.clear();
-    removeLogoutComponent();
-    reloadTree();
-    clearRoot();
+
+function setDefault(){
+    let coach = document.getElementById('coach')
+    coach.options.selectedIndex = 0;
+    let cohort = document.getElementById('cohort');
+    cohort.options.selectedIndex = -1;
 }
 
+
 window.addEventListener('DOMContentLoaded', e =>{
-    if (Object.entries(getTree()).length) {
-        addLogoutComponent();
-        removeLoginComponent();
-    } else {
-        addLoginComponent();
-        removeLogoutComponent();
-    }
+    loginStatus().then(isLoggedIn => {
+        if (isLoggedIn) {
+            addLogoutComponent();
+            removeLoginComponent();
+        } else {
+            addLoginComponent();
+            removeLogoutComponent();
+        }
+    })
 })

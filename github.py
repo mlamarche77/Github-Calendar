@@ -5,6 +5,7 @@ from datetime import date
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 
+from config import github_api_key
 import numpy as np
 import pandas as pd
 from io import BytesIO
@@ -50,18 +51,6 @@ def extract_usernames(file: str):
     headers = contents[0]
     data = contents[1:]
     return [dict(zip(headers, line))['github'] for line in data]
-
-
-def get_api_key():
-    path = Path.cwd() / Path('static') / Path('github_api_key.txt')
-    assert path.exists(), f"File doesn't exist: {path}"
-    try:
-        with open(path, 'r') as r:
-            return r.read().strip().replace("\n", "")
-    except Exception:
-        if not path.exists():
-            print('\033[93mWarning: github_token.txt is not found in current working directory.\033[0m')
-            print('\033[34mCreate the file and paste your GitHub API token to use GitHubs GraphQL API.\033[0m')
 
 
 class Cohorts:
@@ -229,7 +218,7 @@ class GitHub:
 
     def __init__(self, username):
         if GitHub.KEY is None:
-            GitHub.KEY = get_api_key()
+            GitHub.KEY = github_api_key()
         self.__headers = {'Authorization': f"Bearer {GitHub.KEY}"}
         self.__url = "https://api.github.com/graphql"
         self.username = username

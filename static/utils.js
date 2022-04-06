@@ -1,3 +1,13 @@
+function loginStatus(){
+    let password = localStorage.getItem('pss') || '';
+    let formData = new FormData()
+    formData.append('password', password)
+    return fetch('/authenticated', {method: 'POST', body: formData})
+        .then(resp => resp.json())
+        .then(data => !!data.authenticated)
+        .catch(error => false);
+}
+
 
 function authenticate(password){
     let formData = new FormData()
@@ -12,7 +22,6 @@ function hasUpdates(){
         .then(resp => resp.json())
         .then(data => {
             let localDate = localStorage.getItem('date');
-            console.log(localDate, data.date);
             if (localDate === data.date)
                 return false;
             localStorage.setItem('date', data.date);
@@ -32,9 +41,7 @@ function getContribution(username){
                 return response.json()
             throw new Error(response.statusText);
         })
-        .then(data => {
-            return data
-        })
+        .then(data => data)
 }
 
 
