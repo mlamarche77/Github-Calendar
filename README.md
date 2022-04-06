@@ -35,10 +35,7 @@ Then generate the token.
 ```shell
 root@ubuntu:~# apt update
 root@ubuntu:~# apt upgrade
-root@ubuntu:~# apt install python3-pip python3-dev build-essential libssl-dev libffi-dev python3-setuptools
-root@ubuntu:~# apt install python3-venv nginx
-root@ubuntu:~# apt install git curl build-essential python3-certbot-nginx
-root@ubuntu:~# pip3 install wheel gunicorn flask matplotlib numpy requests pandas
+root@ubuntu:~# apt install git curl
 ```
 
 2. Type in the commands to download the project
