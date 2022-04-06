@@ -134,5 +134,4 @@ dmypy.json
 **/.idea
 
 
-static/github_api_key.txt
-static/password.txt
+static/config.json

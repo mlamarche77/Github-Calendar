@@ -4,6 +4,7 @@ from github import GitHub, Cohorts
 from pathlib import Path
 from datetime import datetime
 import json
+import os
 
 app = Flask(__name__)
 app.secret_key = "FkDAg7MUxxAuXe3WYICZwg"
@@ -29,6 +30,14 @@ def create_session():
 @app.route('/')
 def home():
     return render_template("contribution.html")
+
+
+@app.route('/updates', methods=['GET'])
+def updates():
+    file = Path.cwd() / Path('static') / Path('github.csv')
+    unix_time = os.path.getmtime(file)
+    date = datetime.fromtimestamp(unix_time)
+    return jsonify({'date': str(date)})
 
 
 @app.route('/contribution', methods=['POST', 'GET'])

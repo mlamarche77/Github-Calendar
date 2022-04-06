@@ -46,21 +46,26 @@ function searchContributions(e){
 
 
 function reloadTree(){
-    let tree = getTree();
-    let coach = document.getElementById('coach')
-    let cohort = document.getElementById('cohort')
-    while (cohort.firstChild)
-        cohort.removeChild(cohort.firstChild);
-    while (coach.firstChild)
-        coach.removeChild(coach.firstChild);
-    if (Object.entries(tree).length) {
-        addOption(coach, 'all');
-        Object.keys(tree).forEach(c => {if (c !== 'all') addOption(coach, c)});
+    hasUpdates().then(updates => {
+        if (updates){
 
-        addOption(cohort, "all");
-        Object.keys(tree['all']).forEach(c => {if (c !== 'all') addOption(cohort, c)});
-        coach.options.selectedIndex = 0;
-    }
+        } else {
+            let tree = getTree();
+            let coach = document.getElementById('coach')
+            let cohort = document.getElementById('cohort')
+            while (cohort.firstChild)
+                cohort.removeChild(cohort.firstChild);
+            while (coach.firstChild)
+                coach.removeChild(coach.firstChild);
+            if (Object.entries(tree).length) {
+                addOption(coach, 'all');
+                Object.keys(tree).forEach(c => {if (c !== 'all') addOption(coach, c)});
+                addOption(cohort, "all");
+                Object.keys(tree['all']).forEach(c => {if (c !== 'all') addOption(cohort, c)});
+                coach.options.selectedIndex = 0;
+            }
+        }
+    })
 }
 
 

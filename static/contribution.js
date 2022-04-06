@@ -7,14 +7,6 @@ function clearRoot(){
     }
 }
 
-function getTree(){
-    // check that the version is correct
-    let local = localStorage.getItem('appacademycoaches');
-    if (local)
-        return JSON.parse(local).root
-    return {};
-}
-
 function userContainer(){
     let root = document.getElementById("root");
     let div = document.createElement("div");
@@ -72,15 +64,10 @@ function initalData(name, username, coach, cohort){
     };
 }
 
+
 function getData(name, username, coach, cohort){
     let results = initalData(name, username, coach, cohort);
-    fetch(`/contribution?username=${username}`, {signal: controller.signal})
-        .then(response => {
-            if (response.ok)
-                return response.json()
-            throw new Error(response.statusText);
-        })
-        .then(data => {
+    getContribution(username).then(data => {
             let graphImage = results.graphImage;
             graphImage.src = data.graph_image;
             graphImage.width = "1000";
@@ -94,7 +81,7 @@ function getData(name, username, coach, cohort){
             results.url.href = data.url;
         })
         .catch(error => {
-            console.log(error)
+            console.error(error);
             results.graphImage.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/ProhibitionSign2.svg/1024px-ProhibitionSign2.svg.png"
             results.profileImage.src = "https://icon-library.com/images/unknown-person-icon/unknown-person-icon-4.jpg"
             results.profileImage.style.display = "";

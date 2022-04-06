@@ -54,28 +54,50 @@ function loginError(message){
     }, 200);
 }
 
-function login(e){
-    let password = document.getElementById('password');
-    let formData = new FormData()
-    formData.append('password', password.value)
-    fetch('/session', { method: 'POST', body: formData })
-        .then(resp => resp.json())
-        .then(data => {
-            if (data.error)
-                loginError(data.error);
-            else{
-                localStorage.setItem('appacademycoaches', JSON.stringify(data));
-                reloadTree();
-                removeLoginComponent();
-                addLogoutComponent();
+function getTree(){
+    // check that the version is correct
+    let data = {}
+    hasUpdates().then(updates =>{
+        if (updates){
+            let localPss = localStorage.getItem('pss');
+            authenticate(localPss).then(responseData =>{
+                Object.values(data).forEach(key => delete data[key]);
+                if (responseData.error) {
+                }
+                else {
+                    localStorage.setItem('appacademycoaches', JSON.stringify(responseData));
+                    Object.assign(data, responseData);
+                }
+            })
+        } else {
+            let local = localStorage.getItem('appacademycoaches');
+            if (local) {
+                Object.values(data).forEach(key => delete data[key]);
+                Object.assign(data, JSON.parse(local).root);
             }
-        })
-        .catch(error => {
-            error.textContent = error.toString();
-            console.log(error)
-        })
+        }
+    })
+    return data
 }
 
+function login(e){
+    let password = document.getElementById('password');
+    authenticate(password.value).then(data => {
+        if (data.error) {
+            loginError(data.error);
+        }
+        else {
+            localStorage.setItem('appacademycoaches', JSON.stringify(data));
+            localStorage.setItem('pss', password.value);
+            reloadTree();
+            removeLoginComponent();
+            addLogoutComponent();
+        }
+    }).catch(error => {
+        error.textContent = error.toString();
+        console.log(error);
+    });
+}
 
 function removeLogoutComponent(){
     let button = document.getElementById('logout');
@@ -130,7 +152,7 @@ function addLogoutComponent(){
             })
             .catch(error => {
                 error.textContent = error.toString();
-                console.log(error)
+                console.log(error);
             })
     })
 
@@ -146,7 +168,6 @@ function logout(){
     reloadTree();
     clearRoot();
 }
-
 
 window.addEventListener('DOMContentLoaded', e =>{
     if (Object.entries(getTree()).length) {
