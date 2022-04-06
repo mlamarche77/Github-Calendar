@@ -98,7 +98,6 @@ function addLogoutComponent(){
     let button = document.createElement('button');
     let file = document.createElement('input');
     let fileLabel = document.createElement('label');
-    let fileSpan = document.createElement('span');
 
     button.id = "logout";
     button.type = "button";
@@ -113,8 +112,6 @@ function addLogoutComponent(){
     fileLabel.textContent = "Upload csv file";
     fileLabel.className = "file";
     file.hidden = true;
-    fileSpan.id = "fileSpan";
-    fileSpan.textContent = "No file chosen";
 
     file.addEventListener('change', (e) => {
         let file = e.currentTarget.files[0];
@@ -139,7 +136,6 @@ function addLogoutComponent(){
 
     options.appendChild(file);
     options.appendChild(fileLabel);
-    options.appendChild(fileSpan);
 }
 
 function logout(){

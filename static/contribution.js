@@ -8,6 +8,7 @@ function clearRoot(){
 }
 
 function getTree(){
+    // check that the version is correct
     let local = localStorage.getItem('appacademycoaches');
     if (local)
         return JSON.parse(local).root
