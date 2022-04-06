@@ -45,3 +45,16 @@ function getContribution(username){
 }
 
 
+function upload(e){
+    let file = e.currentTarget.files[0];
+    let fileSpan = document.getElementById("fileSpan");
+    let fileName = file.name;
+    let formData = new FormData();
+    formData.append('file', file, fileName);
+    fetch('/upload', { method: 'POST', body: formData })
+        .then(resp => resp.json())
+        .then(data => reloadTree())
+        .catch(error => {
+            fileSpan.textContent = error.toString();
+        })
+}

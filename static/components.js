@@ -10,8 +10,8 @@ function login(e){
     localStorage.setItem('pss', password.value);
     loginStatus().then(isLoggedIn => {
         if (isLoggedIn){
-            removeLoginComponent();
-            addLogoutComponent();
+            removeLoggedInComponents();
+            addLoggedOutComponents();
             reloadTree();
         } else {
             loginError("Invalid password");
@@ -19,8 +19,8 @@ function login(e){
     })
 }
 
-function addLoginComponent(){
-    removeLoginComponent();
+function addLoggedInComponents(){
+    removeLoggedInComponents();
     let div = document.getElementById('login-dashboard');
 
     let label = document.createElement('label');
@@ -47,7 +47,7 @@ function addLoginComponent(){
     div.appendChild(error);
 }
 
-function removeLoginComponent(){
+function removeLoggedInComponents(){
     let password = document.getElementById('password');
     if (password)
         password.remove();
@@ -79,14 +79,14 @@ function enter_key_listener(e){
 
 function logout(){
     controller.abort();
-    addLoginComponent();
+    addLoggedInComponents();
     localStorage.clear();
-    removeLogoutComponent();
+    removeLoggedOutComponents();
     reloadTree();
-    clearRoot();
+    clearUserComponents();
 }
 
-function removeLogoutComponent(){
+function removeLoggedOutComponents(){
     let button = document.getElementById('logout');
     if (button)
         button.remove();
@@ -101,18 +101,21 @@ function removeLogoutComponent(){
         fileSpan.remove();
 }
 
-function addLogoutComponent(){
-    removeLogoutComponent();
+function addLoggedOutComponents(){
+    removeLoggedOutComponents();
     let options = document.getElementById('options');
     let button = document.createElement('button');
     let file = document.createElement('input');
     let fileLabel = document.createElement('label');
+    let fileSpan = document.createElement('span');
 
     button.id = "logout";
     button.type = "button";
     button.textContent = "Logout";
     button.onclick = logout.bind(this);
     options.appendChild(button);
+
+    fileSpan.id = "fileSpan";
 
     file.type = "file";
     file.id = "file";
@@ -121,31 +124,14 @@ function addLogoutComponent(){
     fileLabel.textContent = "Upload csv file";
     fileLabel.className = "file";
     file.hidden = true;
-
-    file.addEventListener('change', (e) => {
-        let file = e.currentTarget.files[0];
-        let fileName = file.name;
-        fileSpan.textContent = fileName;
-        let formData = new FormData();
-        formData.append('file', file, fileName);
-        fetch('/upload', { method: 'POST', body: formData })
-            .then(resp => resp.json())
-            .then(data => {
-                if (data.error)
-                    console.log("Got an error.");
-                else{
-                    reloadTree();
-                }
-            })
-            .catch(error => {
-                error.textContent = error.toString();
-                console.log(error);
-            })
-    })
+    file.addEventListener('change', e => upload(e));
 
     options.appendChild(file);
     options.appendChild(fileLabel);
+    options.appendChild(fileSpan);
 }
+
+
 
 
 function setDefault(){
@@ -159,11 +145,11 @@ function setDefault(){
 window.addEventListener('DOMContentLoaded', e =>{
     loginStatus().then(isLoggedIn => {
         if (isLoggedIn) {
-            addLogoutComponent();
-            removeLoginComponent();
+            addLoggedOutComponents();
+            removeLoggedInComponents();
         } else {
-            addLoginComponent();
-            removeLogoutComponent();
+            addLoggedInComponents();
+            removeLoggedOutComponents();
         }
     })
 })
