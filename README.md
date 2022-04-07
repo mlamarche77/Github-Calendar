@@ -45,10 +45,10 @@ Password:~# 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
 ```
 3. Setup the project settings
 ```shell
-root@ubuntu:~# cd /home/Github-Calendar
-root@ubuntu:~# python3 -m venv env
-root@ubuntu:~# source env/bin/activate
+root@ubuntu:~# sh /home/Github-Calendar/installation.sh
+root@ubuntu:~# source /home/Github-Calendar/env/bin/activate
 (env):~# pip3 install wheel gunicorn flask matplotlib numpy requests pandas
+(env):~# pip install wheel gunicorn flask matplotlib numpy requests pandas
 (env):~# deactivate 
 ```
 
