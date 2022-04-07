@@ -98,7 +98,7 @@ Then generate the token.
 root@ubuntu:~# sudo apt install git curl
 ```
 
-2. Type in the commands to download the project
+6. Type in the commands to download the project
 
 ```shell
 root@ubuntu:~# cd /home
@@ -111,7 +111,7 @@ Password:~# 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
 > Your password above for the command "git clone" is your GitHub api key
 
 
-3. Setup the project settings
+7. Setup the project settings
 
 ```shell
 root@ubuntu:~# yes | sh /home/Github-Calendar/installation.sh
@@ -121,7 +121,7 @@ root@ubuntu:~# source /home/Github-Calendar/env/bin/activate
 (env):~# deactivate 
 ```
 
-5. Start the service which will run the app indefinitely in the background or whenever the computer gets restarted. The system will reboot at the end of the installation.
+8. Start the service which will run the app indefinitely in the background or whenever the computer gets restarted. The system will reboot at the end of the installation.
 
 ```shell
 root@ubuntu:~# sudo sh /home/Github-Calendar/setup.sh
@@ -157,7 +157,7 @@ press CTRL + C
 press CTRL + C
 ```
 
-8. Proxy the requests: the service which connects a url to the program
+9. Proxy the requests: the service which connects a url to the program
 
 Find your IP Address at your droplet account. It's labeled as ipv4.
 
@@ -202,21 +202,20 @@ Enable the configuration you just pasted. The system will reboot again.
 root@ubuntu:~# sh /home/Github-Calendar/configure.sh
 ```
 
-9. Test to see if your website is working. Type your IPv4 address into the browser.
+10. Test to see if your website is working. Type your IPv4 address into the browser.
 ```http://137.184.84.145```
 
-
-10. Go to Domain.com
-11. On the left hand panel click on Pointers & Subdomains
-12. Change Pointer Type and Directory
+11. Go to Domain.com
+12. On the left hand panel click on Pointers & Subdomains
+13. Change Pointer Type and Directory
 
 | Pointer Type | Directory              |
 |--------------|------------------------|
 | URL Stealth  | http://137.184.84.145  | <- The IPv4 address of your Droplet 
 
-13. On your browser type in the url. If you access the website with: www.appacademycoaches.com in your browser, move to the next step. Otherwise, wait until the domain registers the IP address. It can take an hour sometimes or even a day.
+14. On your browser type in the url. If you access the website with: www.appacademycoaches.com in your browser, move to the next step. Otherwise, wait until the domain registers the IP address. It can take an hour sometimes or even a day.
 
-14. Add a certificate to your website. Go back to the terminal/console.
+15. Add a certificate to your website. Go back to the terminal/console.
 
 You can only use this command up to 5 times total within 7 days. Otherwise, it will lock you out.
 
@@ -228,7 +227,7 @@ Choose:
 root@ubuntu:~# certbot --nginx -d appacademycoaches.com -d www.appacademycoaches.com
 ```
 
-15. Reboot your system
+16. Reboot your system
 
 ```shell
 root@ubuntu:~# reboot 
