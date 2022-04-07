@@ -121,11 +121,13 @@ root@ubuntu:~# source /home/Github-Calendar/env/bin/activate
 (env):~# deactivate 
 ```
 
-5. Start the service which will run the app indefinitely in the background or whenever the computer gets restarted
+5. Start the service which will run the app indefinitely in the background or whenever the computer gets restarted. The system will reboot at the end of the installation.
 
 ```shell
 root@ubuntu:~# sh /home/Github-Calendar/setup.sh
 ```
+
+Log back into the console/terminal.
 
 Check the status to make sure it was installed correctly.
 
@@ -158,7 +160,7 @@ Find your IP Address at your droplet account. It's labeled as ipv4.
 - Select the droplet for this project
 - Copy the ipv4 ip address
 
-\[IPV4_ADDRESS] = 137.184.84.145
+[IPV4_ADDRESS] = 137.184.84.145
 
 The IPV4 address will need to be pasted into the editor with the boiler plate code. Replace the IP address below with
 your IPV4 address:
