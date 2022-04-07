@@ -151,6 +151,13 @@ Output should look like this:
              └─46451 /home/sammy/myproject/myprojectenv/bin/python3 /home/sammy/myproject/myprojectenv/bin/gunicorn --workers 3 --bind unix:myproject.sock -m 007 wsgi:app
 ```
 
+To exit press
+```shell
+press CTRL + C
+press CTRL + C
+press CTRL + C
+```
+
 8. Proxy the requests: the service which connects a url to the program
 
 Find your IP Address at your droplet account. It's labeled as ipv4.
