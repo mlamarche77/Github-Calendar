@@ -4,14 +4,14 @@ sudo apt install python3-pip python3-dev build-essential libssl-dev libffi-dev p
 sudo apt install python3-venv nginx
 sudo apt install git curl build-essential python3-certbot-nginx
 sudo apt autoremove
-pip3 install wheel gunicorn flask matplotlib numpy requests pandas
-pip install wheel gunicorn flask matplotlib numpy requests pandas
-pip3 install wheel gunicorn flask matplotlib numpy requests pandas --user
-pip install wheel gunicorn flask matplotlib numpy requests pandas --user
+sudo pip3 install wheel gunicorn flask matplotlib numpy requests pandas
+sudo pip install wheel gunicorn flask matplotlib numpy requests pandas
+sudo pip3 install wheel gunicorn flask matplotlib numpy requests pandas --user
+sudo pip install wheel gunicorn flask matplotlib numpy requests pandas --user
 sudo -H pip3 install wheel gunicorn flask matplotlib numpy requests pandas
 sudo -H pip install wheel gunicorn flask matplotlib numpy requests pandas
-python3 -m venv /home/Github-Calendar/env
+sudo python3 -m venv /home/Github-Calendar/env
 source /home/Github-Calendar/env/bin/activate
-pip3 install wheel gunicorn flask matplotlib numpy requests pandas
-pip install wheel gunicorn flask matplotlib numpy requests pandas
+sudo pip3 install wheel gunicorn flask matplotlib numpy requests pandas
+sudo pip install wheel gunicorn flask matplotlib numpy requests pandas
 deactivate
