@@ -1,3 +1,4 @@
+systemctl disable github_calendar.service
 chmod 0755 /home/Github-Calendar
 rm /etc/systemd/system/github_calendar.service
 rm /etc/systemd/system/multi-user.target.wants/github_calendar.service
