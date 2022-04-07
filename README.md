@@ -123,8 +123,6 @@ root@ubuntu:~# source /home/Github-Calendar/env/bin/activate
 
 5. Start the service which will run the app indefinitely in the background or whenever the computer gets restarted
 
-Start the service
-
 ```shell
 root@ubuntu:~# sh /home/Github-Calendar/setup.sh
 ```
