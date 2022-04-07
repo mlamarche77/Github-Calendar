@@ -68,13 +68,13 @@ on your github settings -> developer settings (last option) -> personal access t
 Expire the token: no expiration Click on the checkboxes:
 repo read:org read:public_key read:repo_hook user read:gpg:key
 #### Inbound Rules
-| Checkbox |
-|----------|
-| <ul><li>[x] item1</li><li>|
-| HTTP     |
-| HTTPS    |
-| Custom   |
-| Custom   |
+| Checkbox                     |
+|------------------------------|
+| <ul><li>[x] item1</li></ul> |
+| HTTP                         |
+| HTTPS                        |
+| Custom                       |
+| Custom                       |
 
 Then generate the token.
 
