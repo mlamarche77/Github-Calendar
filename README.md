@@ -179,8 +179,7 @@ root@ubuntu:~# vi /etc/nginx/sites-available/github_calendar
 ```text
 server {
     listen 80;
-    //server_name 137.184.84.145 appacademycoaches.com www.appacademycoaches.com;
-    server_name 164.90.153.91;
+    server_name 137.184.84.145 appacademycoaches.com www.appacademycoaches.com;
 
     location / {
         include proxy_params;
@@ -230,4 +229,16 @@ Reboot your system
 
 ```shell
 root@ubuntu:~# reboot 
+```
+
+
+If anything isn't working. It's likely a step was missed. Start all over again until changes are reflected.
+Here are some commands you can type whenever you want to reboot the internals.
+
+```shell
+root@ubuntu:~# chmod 0755 /home/Github-Calendar
+root@ubuntu:~# systemctl restart github_calendar
+root@ubuntu:~# systemctl daemon-reload
+root@ubuntu:~# systemctl restart nginx
+root@ubuntu:~# ufw allow 'Nginx Full'
 ```
