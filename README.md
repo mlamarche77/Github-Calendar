@@ -106,6 +106,10 @@ root@ubuntu:~# git clone https://github.com/mlamarche77/Github-Calendar.git
 Username:~#: mlamarche77
 Password:~# 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
 ```
+> Your username above for the command "git clone" is your GitHub username
+> 
+> Your password above for the command "git clone" is your GitHub api key
+
 
 3. Setup the project settings
 
