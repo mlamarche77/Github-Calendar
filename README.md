@@ -202,9 +202,13 @@ Enable the configuration you just pasted. The system will reboot again.
 root@ubuntu:~# sh /home/Github-Calendar/configure.sh
 ```
 
-9. Go to Domain.com
-10. On the left hand panel click on Pointers & Subdomains
-11. Change Pointer Type and Directory
+9. Test to see if your website is working. Type your IPv4 address into the browser.
+```http://137.184.84.145```
+
+
+10. Go to Domain.com
+11. On the left hand panel click on Pointers & Subdomains
+12. Change Pointer Type and Directory
 
 | Pointer Type | Directory              |
 |--------------|------------------------|
@@ -224,7 +228,7 @@ Choose:
 root@ubuntu:~# certbot --nginx -d appacademycoaches.com -d www.appacademycoaches.com
 ```
 
-Reboot your system
+16. Reboot your system
 
 ```shell
 root@ubuntu:~# reboot 
