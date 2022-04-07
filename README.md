@@ -88,7 +88,11 @@ Then generate the token.
 
 ## Creating the project on your own
 
-1. Log into the terminal on digital ocean and type in the commands to install programs to run the project
+1. Log into Digital Ocean
+2. Click on Droplets on the left hand panel
+3. Click on your droplet: appacademycoaches
+4. Click on Console
+5. In the console/terminal type in the commands to install programs to run the project
 
 ```shell
 root@ubuntu:~# apt install git curl
