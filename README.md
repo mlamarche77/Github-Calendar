@@ -92,7 +92,7 @@ Then generate the token.
 2. Click on Droplets on the left hand panel
 3. Click on your droplet: appacademycoaches
 4. Click on Console
-5. In the console/terminal type in the commands to install programs to run the project
+5. In the console/terminal type in the commands to install programs that run the project
 
 ```shell
 root@ubuntu:~# apt install git curl
