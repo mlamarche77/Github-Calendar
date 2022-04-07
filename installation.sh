@@ -1,9 +1,9 @@
-apt update
-apt upgrade
-apt install python3-pip python3-dev build-essential libssl-dev libffi-dev python3-setuptools
-apt install python3-venv nginx
-apt install git curl build-essential python3-certbot-nginx
-apt autoremove
+sudo apt update
+sudo apt upgrade
+sudo apt install python3-pip python3-dev build-essential libssl-dev libffi-dev python3-setuptools
+sudo apt install python3-venv nginx
+sudo apt install git curl build-essential python3-certbot-nginx
+sudo apt autoremove
 pip3 install wheel gunicorn flask matplotlib numpy requests pandas
 pip install wheel gunicorn flask matplotlib numpy requests pandas
 pip3 install wheel gunicorn flask matplotlib numpy requests pandas --user
