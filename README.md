@@ -2,7 +2,7 @@
 
 
 ## Config File
-In the static folder create a file called ```config.json``` with the following in it:
+In the static folder you can edit a file called ```config.json``` with the following in it:
 ```json
 {
   "updates": "",
@@ -11,7 +11,7 @@ In the static folder create a file called ```config.json``` with the following i
   "github_username": "mlamarche77"
 }
 ```
-Note: leave "updates" with a blank.
+Note: leave "updates" with a blank. The program will update it when it receives a file.
 
 
 ## Github API Token
@@ -33,8 +33,6 @@ Then generate the token.
 
 1. Log into the terminal on digital ocean and type in the commands to install programs to run the project
 ```shell
-root@ubuntu:~# apt update
-root@ubuntu:~# apt upgrade
 root@ubuntu:~# apt install git curl
 ```
 
@@ -53,74 +51,16 @@ root@ubuntu:~# source env/bin/activate
 (env):~# pip3 install wheel gunicorn flask matplotlib numpy requests pandas
 (env):~# deactivate 
 ```
-4. Configure the project
-```shell
-root@ubuntu:~# vi /home/Github-Calendar/static/config.json
-```
-Enter the following into the editor
-```json
-{
-  "updates": "",
-  "password": "aacoaches",
-  "github_api_key": "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",
-  "github_username": "mlamarche77"
-}
-```
 
-Write and Exit the editor
-```shell
-press ESC
-press shift + :
-type wq
-press enter
-```
-
-5. Test to make sure all the steps were followed correctly
-```shell
-root@ubuntu:~# python3 /home/Github-Calendar/app.py
-```
-Copy and paste the http url located at the very bottom of the terminal into your browser.
-It looks like:
-* Running on http://137.184.145:5000 (Press CTRL+C to quit)
-
-Press CTRL+C to exit the program
-
-7. Add the service which will run the app indefinitely in the background or whenever the computer gets restarted
-
-```shell
-root@ubuntu:~# vi /etc/systemd/system/github_calendar.service
-```
-Type in the editor
-```text
-[Unit]
-Description=Gunicorn instance to serve Github-Calendar
-After=network.target
-
-[Service]
-User=root
-Group=www-data
-WorkingDirectory=/home/Github-Calendar
-Environment="PATH=/home/Github-Calendar/env/bin"
-ExecStart=/home/Github-Calendar/bin/gunicorn --workers 3 --bind unix:app.sock -m 007 wsgi:app
-
-[Install]
-WantedBy=multi-user.target
-```
-
-
-Write and Exit the editor
-```shell
-press ESC
-press shift + :
-type wq
-press enter
-```
-
+5. Start the service which will run the app indefinitely in the background or whenever the computer gets restarted
 
 Start the service
 ```shell
-root@ubuntu:~# systemctl start github_calendar
-root@ubuntu:~# systemctl enable github_calendar
+root@ubuntu:~# sh /home/Github-Calendar/setup.sh
+```
+
+Check the status to make sure it was installed correctly.
+```shell
 root@ubuntu:~# systemctl status github_calendar
 ```
 
@@ -142,7 +82,7 @@ Output should look like this:
 
 8. Proxy the requests: the service which connects a url to the program
 
-Find your IP Address at your droplet account. Its labeled as ipv4.
+Find your IP Address at your droplet account. It's labeled as ipv4.
 - sign in to DigitalOcean
 - On the left side menu click on Droplets
 - Select the droplet for this project
@@ -150,13 +90,11 @@ Find your IP Address at your droplet account. Its labeled as ipv4.
 
 \[IPV4_ADDRESS] = 137.184.84.145
 
-The IPV4 address will need to be pasted into the editor with the boiler plate code.
+The IPV4 address will need to be pasted into the editor with the boiler plate code. Replace the IP address below with your IPV4 address:
 ```shell
 root@ubuntu:~# vi /etc/nginx/sites-available/github_calendar
 ```
 
-
-Copy and paste the following into the editor and replace the IP address below with your IPV4 address:
 ```text
 server {
     listen 80;
@@ -179,9 +117,7 @@ press enter
 
 Enable the configuration you just pasted
 ```shell
-root@ubuntu:~# ln -s /etc/nginx/sites-available/github_calendar /etc/nginx/sites-enabled 
-root@ubuntu:~# systemctl restart nginx
-root@ubuntu:~# ufw allow 'Nginx Full'
+root@ubuntu:~# sh /home/Github-Calendar/configure.sh
 ```
 
 The following will add a certificate to your project. You can only use this 
@@ -190,7 +126,7 @@ command up to 5 times total within 7 days. Otherwise, it will lock you out.
 Choose:
 - No redirects
 ```shell
-root@ubuntu:~# certbot --nginx -d mydomain.com -d www.mydomain.com 
+root@ubuntu:~# certbot --nginx -d appacademycoaches.com -d www.appacademycoaches.com 
 ```
 
 
