@@ -86,7 +86,7 @@ Expire the token: no expiration
 
 Then generate the token.
 
-## Creating the project on your own
+## Hosting the project on your own
 
 1. Log into Digital Ocean
 2. Click on Droplets on the left hand panel
