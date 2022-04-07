@@ -6,5 +6,3 @@ systemctl start github_calendar
 systemctl enable github_calendar
 systemctl daemon-reload
 systemctl status github_calendar
-rm /etc/nginx/sites-available/github_calendar
-printf "server {\n    listen 80;\n    server_name 137.184.84.145 appacademycoaches.com www.appacademycoaches.com;\n\n    location / {\n        include proxy_params;\n        proxy_pass http://unix:/home/Github-Calendar/app.sock;\n    }\n}" >> /etc/nginx/sites-available/github_calendar
