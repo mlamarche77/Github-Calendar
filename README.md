@@ -66,15 +66,16 @@ To edit click on the pencil icon to change the data. Then commit your changes.
 
 on your github settings -> developer settings (last option) -> personal access tokens -> generate new token 
 Expire the token: no expiration Click on the checkboxes:
-repo read:org read:public_key read:repo_hook user read:gpg:key
+   
 #### Inbound Rules
-| Checkbox                     |
-|------------------------------|
-| <ul><li>[x] item1</li></ul> |
-| HTTP                         |
-| HTTPS                        |
-| Custom                       |
-| Custom                       |
+| Checkbox                              |
+|---------------------------------------|
+| <ul><li>[x] repo</li></ul>            |
+| <ul><li>[x] read:org</li></ul>        |
+| <ul><li>[x] read:public_key</li></ul> |
+| <ul><li>[x] read:repo_hook</li></ul>  |
+| <ul><li>[x] user</li></ul>            |
+| <ul><li>[x] read:gpg:key</li></ul>    |
 
 Then generate the token.
 
