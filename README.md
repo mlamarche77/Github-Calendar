@@ -102,7 +102,7 @@ root@ubuntu:~# sudo apt install git curl
 
 ```shell
 root@ubuntu:~# cd /home
-root@ubuntu:~# git clone https://github.com/mlamarche77/Github-Calendar.git
+root@ubuntu:~# sudo git clone https://github.com/mlamarche77/Github-Calendar.git
 Username:~#: mlamarche77
 Password:~# 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
 ```
@@ -114,7 +114,7 @@ Password:~# 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
 3. Setup the project settings
 
 ```shell
-root@ubuntu:~# sh /home/Github-Calendar/installation.sh
+root@ubuntu:~# yes | sh /home/Github-Calendar/installation.sh
 root@ubuntu:~# source /home/Github-Calendar/env/bin/activate
 (env):~# pip3 install wheel gunicorn flask matplotlib numpy requests pandas
 (env):~# pip install wheel gunicorn flask matplotlib numpy requests pandas
