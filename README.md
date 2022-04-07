@@ -95,7 +95,7 @@ Then generate the token.
 5. In the console/terminal type in the commands to install programs that run the project
 
 ```shell
-root@ubuntu:~# apt install git curl
+root@ubuntu:~# sudo apt install git curl
 ```
 
 2. Type in the commands to download the project
