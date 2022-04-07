@@ -179,7 +179,8 @@ root@ubuntu:~# vi /etc/nginx/sites-available/github_calendar
 ```text
 server {
     listen 80;
-    server_name 137.184.84.145 appacademycoaches.com www.appacademycoaches.com;
+    //server_name 137.184.84.145 appacademycoaches.com www.appacademycoaches.com;
+    server_name 164.90.153.91;
 
     location / {
         include proxy_params;
@@ -197,7 +198,7 @@ type wq
 press enter
 ```
 
-Enable the configuration you just pasted
+Enable the configuration you just pasted. The system will reboot again.
 
 ```shell
 root@ubuntu:~# sh /home/Github-Calendar/configure.sh
