@@ -194,15 +194,26 @@ Enable the configuration you just pasted
 root@ubuntu:~# sh /home/Github-Calendar/configure.sh
 ```
 
-The following will add a certificate to your project. You can only use this command up to 5 times total within 7 days.
-Otherwise, it will lock you out.
+9. Go to Domain.com
+10. On the left hand panel click on Pointers & Subdomains
+11. Change Pointer Type and Directory
+
+| Pointer Type | Directory              |
+|--------------|------------------------|
+| URL Stealth  | http://137.184.84.145  | <- The IPv4 address of your Droplet 
+
+14. On your browser type in the url. If you access the website with: www.appacademycoaches.com in your browser, move to the next step. Otherwise, wait until the domain registers the IP address (can take an hour sometimes or even a day).
+
+15. Add a certificate to your website. Go back to the terminal/console.
+
+You can only use this command up to 5 times total within 7 days. Otherwise, it will lock you out.
 
 Choose:
 
 - No redirects
 
 ```shell
-root@ubuntu:~# certbot --nginx -d appacademycoaches.com -d www.appacademycoaches.com 
+root@ubuntu:~# certbot --nginx -d appacademycoaches.com -d www.appacademycoaches.com
 ```
 
 Reboot your system
