@@ -116,7 +116,7 @@ Password:~# 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
 ```shell
 root@ubuntu:~# yes | sh /home/Github-Calendar/installation.sh
 root@ubuntu:~# source /home/Github-Calendar/env/bin/activate
-(env):~# pip3 install wheel gunicorn flask matplotlib numpy requests pandas
+(env):~# sudo pip3 install wheel gunicorn flask matplotlib numpy requests pandas
 (env):~# pip install wheel gunicorn flask matplotlib numpy requests pandas
 (env):~# deactivate 
 ```
@@ -124,7 +124,7 @@ root@ubuntu:~# source /home/Github-Calendar/env/bin/activate
 5. Start the service which will run the app indefinitely in the background or whenever the computer gets restarted. The system will reboot at the end of the installation.
 
 ```shell
-root@ubuntu:~# sh /home/Github-Calendar/setup.sh
+root@ubuntu:~# sudo sh /home/Github-Calendar/setup.sh
 ```
 
 Log back into the console/terminal.
@@ -132,7 +132,7 @@ Log back into the console/terminal.
 Check the status to make sure it was installed correctly.
 
 ```shell
-root@ubuntu:~# systemctl status github_calendar
+root@ubuntu:~# sudo systemctl status github_calendar
 ```
 
 Output should look like this:
@@ -153,7 +153,6 @@ Output should look like this:
 
 To exit press
 ```shell
-press CTRL + C
 press CTRL + C
 press CTRL + C
 ```
