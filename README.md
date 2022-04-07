@@ -64,10 +64,14 @@ To edit click on the pencil icon to change the data. Then commit your changes.
 
 ## Github API Token
 
-on your github settings -> developer settings (last option) -> personal access tokens -> generate new token 
+on your github settings 
+    -> developer settings (last option) 
+    -> personal access tokens 
+    -> generate new token 
+
 Expire the token: no expiration Click on the checkboxes:
    
-#### Inbound Rules
+
 | Checkbox                              |
 |---------------------------------------|
 | <ul><li>[x] repo</li></ul>            |
