@@ -6,7 +6,7 @@ apt install git curl build-essential python3-certbot-nginx
 pip3 install wheel gunicorn flask matplotlib numpy requests pandas
 pip install wheel gunicorn flask matplotlib numpy requests pandas
 apt autoremove
-python3 -m venv env
+python3 -m venv /home/Github-Calendar/env
 source /home/Github-Calendar/env/bin/activate
 pip3 install wheel gunicorn flask matplotlib numpy requests pandas
 pip install wheel gunicorn flask matplotlib numpy requests pandas
