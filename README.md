@@ -214,9 +214,9 @@ root@ubuntu:~# sh /home/Github-Calendar/configure.sh
 |--------------|------------------------|
 | URL Stealth  | http://137.184.84.145  | <- The IPv4 address of your Droplet 
 
-14. On your browser type in the url. If you access the website with: www.appacademycoaches.com in your browser, move to the next step. Otherwise, wait until the domain registers the IP address. It can take an hour sometimes or even a day.
+13. On your browser type in the url. If you access the website with: www.appacademycoaches.com in your browser, move to the next step. Otherwise, wait until the domain registers the IP address. It can take an hour sometimes or even a day.
 
-15. Add a certificate to your website. Go back to the terminal/console.
+14. Add a certificate to your website. Go back to the terminal/console.
 
 You can only use this command up to 5 times total within 7 days. Otherwise, it will lock you out.
 
@@ -228,7 +228,7 @@ Choose:
 root@ubuntu:~# certbot --nginx -d appacademycoaches.com -d www.appacademycoaches.com
 ```
 
-16. Reboot your system
+15. Reboot your system
 
 ```shell
 root@ubuntu:~# reboot 
