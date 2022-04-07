@@ -64,9 +64,17 @@ To edit click on the pencil icon to change the data. Then commit your changes.
 
 ## Github API Token
 
-on your github settings -> developer settings (last option) -> personal access tokens -> generate new token Expire the
-token: no expiration Click on the checkboxes:
+on your github settings -> developer settings (last option) -> personal access tokens -> generate new token 
+Expire the token: no expiration Click on the checkboxes:
 repo read:org read:public_key read:repo_hook user read:gpg:key
+#### Inbound Rules
+| Checkbox |
+|----------|
+| <ul><li>[x] item1</li><li>|
+| HTTP     |
+| HTTPS    |
+| Custom   |
+| Custom   |
 
 Then generate the token.
 
