@@ -5,7 +5,7 @@ from datetime import date
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 
-from config import github_api_key
+from lib.config import github_api_key
 import numpy as np
 import pandas as pd
 from io import BytesIO

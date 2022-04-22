@@ -18,6 +18,8 @@ def github_api_key():
 
 def is_password(password):
     path = Path.cwd() / Path('static') / Path('config.json')
+    if not path.exists():
+        raise FileNotFoundError("Can't find the config.json file to authenticate password.")
     with open(path, 'r') as r:
         config = json.load(r)
         return config['password'] == password
